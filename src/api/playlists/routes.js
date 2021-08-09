@@ -38,7 +38,14 @@ const routes = (handler) => [
     options: {
       auth: 'musicapp_jwt',
     },
-
+  },
+  {
+    method: 'DELETE',
+    path: '/playlists/{playlistId}/songs',
+    handler: handler.deleteSongFromPlaylistsHandler,
+    options: {
+      auth: 'musicapp_jwt',
+    },
   },
 ];
 
