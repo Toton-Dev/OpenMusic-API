@@ -1,5 +1,5 @@
 class PlaylistsHandler {
-  constructor(service, validator = null) {
+  constructor(service, validator) {
     this._service = service;
     this._validator = validator;
 
@@ -12,23 +12,29 @@ class PlaylistsHandler {
   }
 
   async postPlaylistHandler(request, h) {
-    const { name } = request.payload;
-    const { id: credentialId } = request.auth.credentials;
+    try {
+      this._validator.validatePostPlaylistPayload(request.payload);
 
-    const playlistId = await this._service.addPlaylist({
-      name,
-      owner: credentialId,
-    });
+      const { name } = request.payload;
+      const { id: credentialId } = request.auth.credentials;
 
-    const response = h.response({
-      status: 'success',
-      message: 'Playlist berhasil ditambahkan',
-      data: {
-        playlistId,
-      },
-    });
-    response.code(201);
-    return response;
+      const playlistId = await this._service.addPlaylist({
+        name,
+        owner: credentialId,
+      });
+
+      const response = h.response({
+        status: 'success',
+        message: 'Playlist berhasil ditambahkan',
+        data: {
+          playlistId,
+        },
+      });
+      response.code(201);
+      return response;
+    } catch (error) {
+      return error;
+    }
   }
 
   async getPlaylistsHandler(request) {
@@ -56,18 +62,24 @@ class PlaylistsHandler {
   }
 
   async postSongToPlaylistsHandler(request, h) {
-    const { songId } = request.payload;
-    const { playlistId } = request.params;
-    const { id: credentialId } = request.auth.credentials;
+    try {
+      this._validator.validatePostSongToPlaylistsPayload(request.payload);
 
-    await this._service.verifyPlaylistOwner(playlistId, credentialId);
-    await this._service.addSongToPlaylist(playlistId, songId);
-    const response = h.response({
-      status: 'success',
-      message: 'Lagu berhasil ditambahkan ke playlist.',
-    });
-    response.code(201);
-    return response;
+      const { songId } = request.payload;
+      const { playlistId } = request.params;
+      const { id: credentialId } = request.auth.credentials;
+
+      await this._service.verifyPlaylistOwner(playlistId, credentialId);
+      await this._service.addSongToPlaylist(playlistId, songId);
+      const response = h.response({
+        status: 'success',
+        message: 'Lagu berhasil ditambahkan ke playlist.',
+      });
+      response.code(201);
+      return response;
+    } catch (error) {
+      return error;
+    }
   }
 
   async getSongFromPlaylistsHandler(request) {

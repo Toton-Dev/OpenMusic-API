@@ -24,6 +24,7 @@ const TokenManager = require('./tokenize/TokenManager');
 // playlist
 const playlists = require('./api/playlists');
 const PlaylistsService = require('./services/postgres/PlaylistsService');
+const PlaylistsValidator = require('./validator/playlists');
 
 const init = async () => {
   const songsService = new SongsService();
@@ -119,6 +120,7 @@ const init = async () => {
       plugin: playlists,
       options: {
         service: playlistsService,
+        validator: PlaylistsValidator,
       },
     },
   ]);
