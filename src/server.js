@@ -78,14 +78,17 @@ const init = async () => {
     if (error instanceof Error) {
       const response = h.response({
         status: 'error',
-        message: 'Maaf, terjadi kegagalan pada sever kami.',
+        message: error.output.payload.message,
       });
-      response.code(500);
-      console.error(error);
+      response.code(error.output.statusCode);
+
+      if (error.output.statusCode === 500) {
+        console.error(error);
+      }
       return response;
     }
 
-    return error;
+    return error.continue || error;
   });
 
   await server.register([
