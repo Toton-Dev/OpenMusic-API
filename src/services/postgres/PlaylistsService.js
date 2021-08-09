@@ -2,6 +2,7 @@ const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 const NotFoundError = require('../../exceptions/NotFoundError');
+const InvariantError = require('../../exceptions/InvariantError');
 
 class PlaylistsService {
   constructor() {
@@ -41,6 +42,21 @@ class PlaylistsService {
 
     if (!result.rowCount) {
       throw new NotFoundError('Id tidak ditemukan. Playlist gagal dihapus.');
+    }
+  }
+
+  async addSongToPlaylist(playlistId, songId) {
+    const id = `songPlaylists-${nanoid(16)}`;
+
+    const query = {
+      text: 'INSERT INTO playlistsongs VALUES($1, $2, $3) RETURNING id',
+      values: [id, playlistId, songId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Lagu gagal ditambahkan ke playlist');
     }
   }
 
