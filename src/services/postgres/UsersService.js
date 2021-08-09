@@ -23,7 +23,7 @@ class UsersService {
 
     const result = await this._pool.query(query);
 
-    return result.rows[0];
+    return result.rows[0].id;
   }
 
   /* Check username in database */
