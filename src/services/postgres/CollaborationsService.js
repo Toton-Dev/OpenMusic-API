@@ -7,12 +7,12 @@ class CollaborationsService {
     this._pool = new Pool();
   }
 
-  async postCollaboration(noteId, userId) {
+  async postCollaboration(playlistId, userId) {
     const id = `collaborator-${nanoid(16)}`;
 
     const query = {
       text: 'INSERT INTO collaborations VALUES($1, $2, $3) RETURNING id',
-      values: [id, noteId, userId],
+      values: [id, playlistId, userId],
     };
 
     const result = await this._pool.query(query);
