@@ -9,8 +9,16 @@
     "lint": "eslint ./src",
     "migrate": "node-pg-migrate"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TotonAntoko/OpenMusic-API.git"
+  },
   "author": "Toton Dwi Antoko",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TotonAntoko/OpenMusic-API/issues"
+  },
+  "homepage": "https://github.com/TotonAntoko/OpenMusic-API#readme",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
