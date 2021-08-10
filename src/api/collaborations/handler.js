@@ -1,16 +1,13 @@
 class CollaborationsHandler {
-  constructor(collaborationsService, playlistsService, validator) {
+  constructor(collaborationsService, playlistsService) {
     this._collaborationsService = collaborationsService;
     this._playlistsService = playlistsService;
-    this._validator = validator;
 
     this.postCollaborationHandler = this.postCollaborationHandler.bind(this);
     this.deleteCollaborationHandler = this.deleteCollaborationHandler.bind(this);
   }
 
   async postCollaborationHandler(request, h) {
-    // this._validator.validateCollaborationPayload(request.payload);
-
     const { id: credentialId } = request.auth.credentials;
     const { playlistId, userId } = request.payload;
 
@@ -33,11 +30,8 @@ class CollaborationsHandler {
   }
 
   async deleteCollaborationHandler(request) {
-    // this._validator.validateCollaborationPayload(request.payload);
-    const { id: credentialId } = request.auth.credentials;
     const { playlistId, userId } = request.payload;
 
-    // await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
     await this._collaborationsService.deleteCollaboration(
       playlistId,
       userId,
