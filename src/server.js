@@ -69,6 +69,7 @@ const init = async () => {
     }),
   });
 
+  // Error Handling supaya tidak selalu dipanggil pada handler
   server.ext('onPreResponse', (request, h) => {
     const { response: error } = request;
 
