@@ -1,6 +1,6 @@
 class Listener {
   constructor(songPlaylistsService, mailSender) {
-    this._songsService = songPlaylistsService;
+    this.songPlaylistsService = songPlaylistsService;
     this._mailSender = mailSender;
 
     this.listen = this.listen.bind(this);
